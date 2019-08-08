@@ -1,0 +1,19 @@
+{
+  "name": "lom's project",
+  "version": "1.0.0",
+  "description": "learning project of Dushkin Dmitro",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lomkovsky/nodejs-start-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lomkovsky/nodejs-start-project/issues"
+  },
+  "homepage": "https://github.com/lomkovsky/nodejs-start-project#readme"
+}
