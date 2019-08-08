@@ -9,4 +9,5 @@ foo.txt
 *.[oa]
 # ignore folder /node_modules
 /node_modules
+# ignore .vscode
 .vscode
