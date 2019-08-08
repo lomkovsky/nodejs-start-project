@@ -1,1 +1,1 @@
-# nodejs-start-project test
+# learning project of Dushkin Dmitro
