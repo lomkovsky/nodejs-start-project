@@ -9,4 +9,5 @@ if (command === "add"){
     console.log(a * b)
  } else {
      console.log("Chuse 'add' or 'mult'")
- }
+ 
+    }
