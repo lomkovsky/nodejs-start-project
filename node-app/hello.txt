@@ -1,1 +1,0 @@
-hello! data to appendtext frome file utils.js
