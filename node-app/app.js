@@ -1,5 +1,7 @@
+const validator = require('validator');
 const notes = require('./notes.js');
 console.log("Text frome notes.js is = ", notes())
+console.log(validator.isEmail("lom@i.ua"));
 
 
 
