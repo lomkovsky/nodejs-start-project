@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/lomkovsky/nodejs-start-project/issues"
   },
-  "homepage": "https://github.com/lomkovsky/nodejs-start-project#readme"
+  "homepage": "https://github.com/lomkovsky/nodejs-start-project#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "validator": "^11.1.0"
+  }
 }
