@@ -25,7 +25,7 @@ const geoCode = (address, callback) => {
     request({ url: url, json: true}, (error, response) => {
         if (error) {
             callback('Unable to connect to geo service!');
-        } else if (response.body.error) {
+        } else if (response.body.features === 0) {
             callback('Unable to find geo location');
         } else {
             callback(undefined, response);
