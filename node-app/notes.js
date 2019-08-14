@@ -1,12 +1,12 @@
 const fs = require('fs');
 const chalk = require('chalk');
-const getNotes = () => "Your notes...";
+const getNotes = () => {
+    return "Your notes..."
+};
 const addNote = (title, body) => {
     const notes = loadNotese();
-    const duolicateNotes = notes.filter(function (note){
-        return note.title === title
-    })
-    if (duolicateNotes.length === 0) {
+    const dublicateNote = notes.find((note) => note.title === title);
+    if (!dublicateNote) {
         notes.push({
             title: title,
             body: body
@@ -33,18 +33,36 @@ const loadNotese = () => {
 };
 const deleteNote = (title, body) => {
     const notes = loadNotese();
-    const checkNotes = notes.filter((note) => note.title === title)
-    if (checkNotes.length === 0) {
-        saveNotes(notes);
+    const checkNotes = notes.find((note) => note.title === title);
+    if (!checkNotes) {
         console.log(chalk.red.inverse('No such Title!'));
     } else {
-        const duolicateNotes = notes.filter((note) => note.title !== title)
-        saveNotes(duolicateNotes);
+        const dublicateNotes = notes.filter((note) => note.title !== title);
+        saveNotes(dublicateNotes);
         console.log(chalk.blue.inverse('Note removed!'));
+    }
+};
+const listNotes = () => {
+    console.log(chalk.blue.inverse('List of titles'))
+    const notes = loadNotese();
+    notes.forEach(element => {
+        console.log(chalk.blue(element.title)) 
+    });
+};
+const readNotes = (title) => {
+    const notes = loadNotese();
+    const checkNotes = notes.find((note) => note.title === title);
+    if (!checkNotes) {
+        console.log(chalk.red.inverse('No such Title!'));
+    } else {
+        console.log(chalk.blue.inverse('Note title = ' + checkNotes.title));
+        console.log(chalk.blue('Note body = ' + checkNotes.body));
     }
 }
 module.exports = {
     getNotes: getNotes,
     addNote: addNote,
-    deleteNote: deleteNote
+    deleteNote: deleteNote,
+    listNotes: listNotes,
+    readNotes: readNotes
 }
