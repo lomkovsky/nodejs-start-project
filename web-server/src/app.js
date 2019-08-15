@@ -1,6 +1,8 @@
 const path = require('path');
 const express = require('express');
-const calck = require('chalk');
+const chalk = require('chalk');
+const geoCode = require('./utils/geoCode.js');
+const weatherCode = require('./utils/weatherCode.js');
 const hbs = require('hbs');
 
 const app = express();
@@ -37,7 +39,30 @@ app.get('/help', (req, res) => {
     });
 });
 app.get('/weather', (req, res) => {
-    res.send({ name: "Weather page"});
+    if(!req.query.address){
+        return res.send({
+            error: "You must provide an address"
+        })
+    }
+
+    geoCode(req.query.address, (error, {latitude, longitude, place}) => {
+        if (error) {
+            return res.send(error);
+        } else {
+            weatherCode(latitude, longitude, (error, {timezone, summary, temperature}) => {
+                if (error) {
+                    return res.send(error);
+                } 
+                    res.send({
+                    place: place,
+                    forecast: summary,
+                    timezome: timezone,
+                    temperature: temperature,
+                    address: req.query.address
+                    });
+            });
+        };
+    });
 });
 app.get('/help/*', (req, res) => {
     res.render('404', {
@@ -54,5 +79,5 @@ app.get('*', (req, res) => {
     });
 });
 app.listen(3000, () => {
-    console.log(calck.green('Server start at port 3000'));
+    console.log(chalk.green('Server start at port 3000'));
 });
