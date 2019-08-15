@@ -45,13 +45,13 @@ app.get('/weather', (req, res) => {
         })
     }
 
-    geoCode(req.query.address, (error, {latitude, longitude, place}) => {
+    geoCode(req.query.address, (error, {latitude, longitude, place} = {}) => {
         if (error) {
-            return res.send(error);
+            return res.send({error});
         } else {
             weatherCode(latitude, longitude, (error, {timezone, summary, temperature}) => {
                 if (error) {
-                    return res.send(error);
+                    return res.send({error});
                 } 
                     res.send({
                     place: place,
