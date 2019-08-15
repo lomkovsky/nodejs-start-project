@@ -3,9 +3,16 @@ const express = require('express');
 const calck = require('chalk');
 
 const app = express();
-const publicFolderPath = path.join(__dirname, '../public');
 
+// Define path for Express config
+const publicFolderPath = path.join(__dirname, '../public');
+const viewsPath = path.join(__dirname, '../templates/views');
+
+// Setup handlebars engine and views location
+app.set('views', viewsPath);
 app.set('view engine', 'hbs');
+
+// Setup static directory to serve
 app.use(express.static(publicFolderPath));
 app.get('', (req, res) => {
     res.render('index', {
