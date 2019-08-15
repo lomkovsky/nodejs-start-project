@@ -1,18 +1,11 @@
+const path = require('path');
 const express = require('express');
 const calck = require('chalk');
 const app = express();
-
-app.get('', (req, res) => {
-    res.send('Hello Express!');
-});
-app.get('/help', (req, res) => {
-    res.send('Help page');
-});
-app.get('/about', (req, res) => {
-    res.send('About page');
-});
+const publicFolderPath = path.join(__dirname, '../public');
+app.use(express.static(publicFolderPath));
 app.get('/weather', (req, res) => {
-    res.send('Weather page')
+    res.send({ name: "Weather page"});
 });
 app.listen(3000, () => {
     console.log(calck.green('Server start at port 3000'));
