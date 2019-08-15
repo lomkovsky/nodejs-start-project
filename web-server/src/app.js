@@ -40,7 +40,7 @@ app.get('/weather', (req, res) => {
     res.send({ name: "Weather page"});
 });
 app.get('/help/*', (req, res) => {
-    res.render('helpArtNotFound', {
+    res.render('404', {
         title: '404',
         helpfulText: 'like I said - No one will helps you',
         name: 'lom'
