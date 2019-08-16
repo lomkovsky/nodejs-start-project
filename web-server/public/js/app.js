@@ -17,7 +17,7 @@ weatherForm.addEventListener('submit', (e) => {
             messageOne.textContent = data.error;
         } else {
             console.log(data);
-            messageOne.textContent = 'For plase nemed ' + data.place + ' timezone ' + data.timezome;
+            messageOne.textContent = 'For plase named ' + data.place + ' timezone ' + data.timezome;
             messageTwo.textContent = 'Current temperature is ' + data.temperature + ' celsius degrees';
             messageThree.textContent = 'Forecast is ' + data.forecast;
         };
