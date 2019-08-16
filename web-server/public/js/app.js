@@ -8,6 +8,8 @@ weatherForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const location = search.value;
     messageOne.textContent = 'Please wait...';
+    messageTwo.textContent = '';
+    messageThree.textContent = '';
     const url = '/weather?address=' + location;
     fetch(url).then((response) => {
     response.json().then((data) => {
