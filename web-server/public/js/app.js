@@ -1,23 +1,24 @@
-//alert('app.js loaded');
-
 const weatherForm = document.querySelector('form');
-const search =document.querySelector('input');
+const search = document.querySelector('input');
+const messageOne = document.querySelector('#messageOne');
+const messageTwo = document.querySelector('#messageTwo');
+const messageThree = document.querySelector('#messageThree');
 
 weatherForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
     const location = search.value;
-    console.log(location);
+    messageOne.textContent = 'Please wait...';
     const url = 'http://localhost:3000/weather?address=' + location;
     fetch(url).then((response) => {
     response.json().then((data) => {
         if (data.error) {
-            console.log(data.error);
+            messageOne.textContent = data.error;
         } else {
             console.log(data);
-            const temp = data.temperature;
-            console.log(temp);
+            messageOne.textContent = 'For plase nemed ' + data.place + ' timezone ' + data.timezome;
+            messageTwo.textContent = 'Current temperature is ' + data.temperature + ' celsius degrees';
+            messageThree.textContent = 'Forecast is ' + data.forecast;
         };
     });
 });
-})
+});
