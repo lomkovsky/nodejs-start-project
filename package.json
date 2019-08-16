@@ -4,7 +4,8 @@
   "description": "learning project of Dushkin Dmitro",
   "main": "index.js",
   "scripts": {
-    "start": "node web-server/src/app.js"
+    "start": "node web-server/src/app.js",
+    "dev": "nodemon web-server/src/app.js -e js,hbs,css"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,7 @@
     "validator": "^11.1.0",
     "yargs": "^13.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
 }
