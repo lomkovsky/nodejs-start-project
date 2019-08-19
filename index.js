@@ -1,2 +1,2 @@
 // added ssh key
-console.log("Test console.log")
+console.log("/home/lom/mongodb/bin/mongod --dbpath=/home/lom/mongodb-data")
