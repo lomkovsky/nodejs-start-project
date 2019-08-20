@@ -4,9 +4,9 @@
   "description": "learning project of Dushkin Dmitro",
   "main": "index.js",
   "scripts": {
-    "start": "node web-server/src/app.js",
+    "start": "node task-manager/src/index.js",
     "mongodb": "/home/lom/mongodb/bin/mongod --dbpath=/home/lom/mongodb-data",
-    "dev": "nodemon web-server/src/app.js -e js,hbs,css"
+    "dev": "nodemon task-manager/src/index.js -e js,hbs,css"
   },
   "repository": {
     "type": "git",
