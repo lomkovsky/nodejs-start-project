@@ -3,6 +3,7 @@
 // const mongodb = require('mongodb');
 // const MongoClient = mongodb.MongoClient;
 // const ObjectID = mongodb.ObjectID;
+
 const {MongoClient, ObjectID} = require('mongodb');
 
 const connectionURL = 'mongodb://127.0.0.1:27017';
@@ -13,15 +14,28 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true }, (error, client)
         return console.log('Unable to connect to database!');
     };
     const db = client.db(databaseName);
-
-    db.collection('users').find({name: 'lom'}).toArray((error, users) => {
-        if (error) {
-             return console.log('can not find users');
-        };
-        console.log(users);
+    const IdToSearch = new ObjectID("5d5ba6f0f5f19b0820fdc0dc");
+    db.collection('buying').updateMany({completed: false }, {$set :{completed: true} }).then(() => 
+    db.collection('buying').find({completed: true }).toArray().then((data) => {
+        console.log(data);
+    })
+        ).catch((error) => {
+        console.log(error);
     });
 
-    // db.collection('users').findOne({ _id: ObjectID("5d5ba6f0f5f19b0820fdc0dd"), }, (error, user) => { 
+
+
+
+
+
+    // db.collection('users').find({name: 'lom'}).toArray((error, users) => {
+    //     if (error) {
+    //          return console.log('can not find users');
+    //     };
+    //     console.log(users);
+    // });
+
+    // db.collection('users').findOne({ _id: new ObjectID("5d5ba6f0f5f19b0820fdc0dc"), }, (error, user) => { 
     //     if (error) { 
     //         return console.log('unable to fetch the user');
     //     };
