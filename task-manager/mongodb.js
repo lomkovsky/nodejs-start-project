@@ -14,8 +14,10 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true }, (error, client)
         return console.log('Unable to connect to database!');
     };
     const db = client.db(databaseName);
-    const IdToSearch = new ObjectID("5d5ba6f0f5f19b0820fdc0dc");
-    db.collection('users').deleteOne({_id: IdToSearch}).then(() => console.log("data deleted")) 
+    
+    
+    // const IdToSearch = new ObjectID("5d5ba6f0f5f19b0820fdc0dc");
+    // db.collection('users').deleteOne({_id: IdToSearch}).then(() => console.log("data deleted")) 
     
     
     // db.collection('buying').updateMany({completed: false }, {$set :{completed: true} }).then(() => 
