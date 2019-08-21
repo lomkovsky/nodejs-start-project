@@ -52,7 +52,9 @@ app.get('/users/:id', (req, res) => {
 // create a new user
 app.post('/users', (req, res) => {
     const user = new User(req.body);
-    user.save().then(() => res.send(user)).catch((e) => {
+    user.save().then(() => 
+        res.status(201).res.send(user))
+        .catch((e) => {
         res.status(400).send(e);
     });
     
@@ -70,7 +72,9 @@ app.get('/tasks', (req, res) => {
 // create a new task
 app.post('/tasks', (req, res) => {
     const task = new Task(req.body);
-    task.save().then(() => res.send(task)).catch((e) => {
+    task.save().then(() => 
+        res.status(201).res.send(task))
+        .catch((e) => {
         res.status(400).send(e);
     });
     
