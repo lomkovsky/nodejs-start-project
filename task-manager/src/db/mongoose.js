@@ -16,17 +16,17 @@ mongoose.connect(connectionURL, {
 // });
 // me.save().then(() => console.log("data saved")).catch((e) => console.log(e));
 
-const Task = mongoose.model('Task', {
-    description: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    completed: {
-        type: Boolean,
-        default: false
-    }
-});
+// const Task = mongoose.model('Task', {
+//     description: {
+//         type: String,
+//         required: true,
+//         trim: true
+//     },
+//     completed: {
+//         type: Boolean,
+//         default: false
+//     }
+// });
 // const task = new Task({
 //     description: "go to work   ",
 //     completed: true
