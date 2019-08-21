@@ -7,6 +7,28 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+//read all users
+app.get('/users', (req, res) => {
+    User.find().then((result) => {
+        res.send(result)
+    }).catch((e) => {
+        res.status(500).send(e);
+    });
+});
+
+//read user by ID
+app.get('/users/:id', (req, res) => {
+    const _id = req.params.id;
+    User.findById(_id).then((user) => {
+        if (!user) {
+            return res.status(404).send('USER NOT FOUND!');
+        }
+        res.send(user)
+    }).catch((e) => {
+        res.status(500).send(e);
+    });
+});
+
 // create a new user
 app.post('/users', (req, res) => {
     const user = new User(req.body);
@@ -14,6 +36,15 @@ app.post('/users', (req, res) => {
         res.status(400).send(e);
     });
     
+});
+
+//read all tasks
+app.get('/tasks', (req, res) => {
+    Task.find().then((result) => {
+        res.send(result)
+    }).catch((e) => {
+        res.status(500).send(e);
+    });
 });
 
 // create a new task
