@@ -69,6 +69,16 @@ app.get('/tasks', (req, res) => {
     });
 });
 
+//read task by ID
+app.get('/tasks/:id', (req, res) => {
+    const _id = req.params.id;
+    Task.findById(_id).then((task) => {
+        res.send(task)
+    }).catch((e) => {
+        res.status(500).send('TASK NOT FOUND!3');
+    });
+});
+
 // create a new task
 app.post('/tasks', (req, res) => {
     const task = new Task(req.body);
