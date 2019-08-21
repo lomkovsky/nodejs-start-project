@@ -20,14 +20,34 @@ app.get('/users', (req, res) => {
 app.get('/users/:id', (req, res) => {
     const _id = req.params.id;
     User.findById(_id).then((user) => {
+        console.log(user);
         if (!user) {
-            return res.status(404).send('USER NOT FOUND!');
+            console.log('USER NOT FOUND!2')
+            return res.status(404).send('USER NOT FOUND!2'); // 'USER NOT FOUND!'
         }
-        res.send(user)
+        console.log('USER FOUND');
+        res.send(user);
     }).catch((e) => {
-        res.status(500).send(e);
+        console.log('USER NOT FOUND!3')
+        res.status(500).send('USER NOT FOUND!3');
     });
 });
+// app.get('/users/:name', (req, res) => {
+//     const name = req.params.name;
+//     User.find({ name: name }).then((user) => {
+//         console.log(user);
+//         if (user.length < 1) {
+//             console.log('USER NOT FOUND!2')
+//             return res.status(404).send('USER NOT FOUND!2'); // 'USER NOT FOUND!'
+//         }
+//         console.log('USER FOUND');
+//         res.send(user);
+//     }).catch((e) => {
+//         console.log('USER NOT FOUND!3')
+//         res.status(500).send('USER NOT FOUND!3');
+//     });
+// });
+
 
 // create a new user
 app.post('/users', (req, res) => {
