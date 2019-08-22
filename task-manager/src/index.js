@@ -9,99 +9,84 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 //read all users
-app.get('/users', (req, res) => {
-    User.find().then((result) => {
-        res.send(result)
-    }).catch((e) => {
-        res.status(500).send(e);
-    });
-});
+app.get('/users', async (req, res) => {
+  try {
+  const result = await User.find();
+  res.send(result);
+  } catch (e) {
+    res.status(500).send(e);
+  };
+  });
 
 //read user by ID
-app.get('/users/:id', (req, res) => {
-   
-    // let objId = null;
-    // try {
-    //     objId = mongoose.Types.ObjectId(req.params.id);
-    // } catch (error) {
-    //     return res.status(400).json({error: `Not valid id ${req.params.id}`});
-    // }
-    
-    const _id = req.params.id;
-    User.findById(_id).then((user) => {
-        if (!user) {
-            return res.status(404).send('USER NOT FOUND!'); 
-        }
-        res.send(user);
-    }).catch((e) => {
-        if(e.name === 'CastError') {
-            return res.status(400).json({error: `Not valid id ${req.params.id}`});
-        }
-        console.log(JSON.stringify(e, null, 2));
-        res.status(500).send();
-    });
+app.get('/users/:id', async (req, res) => {
+  const _id = req.params.id;
+  try {
+  const user = await User.findById(_id);
+     if (!user) {
+      return res.status(404).send('USER NOT FOUND!');
+    }
+    res.send(user);
+  } catch (e) {
+    if (e.name === 'CastError') {
+      return res.status(400).json({ error: `Not valid id ${req.params.id}` });
+    }
+    console.log(JSON.stringify(e, null, 2));
+    res.status(500).send();
+  };
 });
-   
-
-
-// app.get('/users/:name', (req, res) => {
-//     const name = req.params.name;
-//     User.find({ name: name }).then((user) => {
-//         console.log(user);
-//         if (!user.length) {
-//             console.log('USER NOT FOUND!2')
-//             return res.status(404).send('USER NOT FOUND!2'); // 'USER NOT FOUND!'
-//         }
-//         console.log('USER FOUND');
-//         res.send(user);
-//     }).catch((e) => {
-//         console.log('USER NOT FOUND!3')
-//         res.status(500).send('USER NOT FOUND!3');
-//     });
-// });
-
 
 // create a new user
-app.post('/users', (req, res) => {
-    const user = new User(req.body);
-    user.save().then(() => 
-        res.status(201).res.send(user))
-        .catch((e) => {
-        res.status(400).send(e);
-    });
-    
+app.post('/users', async (req, res) => {
+  const user = new User(req.body);
+  console.log(user);
+  try {
+    await user.save();
+    res.status(201).send(user);
+  } catch (e) {
+    res.status(400).send(e);
+  };
 });
 
 //read all tasks
-app.get('/tasks', (req, res) => {
-    Task.find().then((result) => {
-        res.send(result)
-    }).catch((e) => {
-        res.status(500).send(e);
-    });
+app.get('/tasks', async (req, res) => {
+  try {
+    const task = await Task.find();
+    res.send(task);
+  } catch (e) {
+    res.status(500).send(e);
+  };
 });
 
 //read task by ID
-app.get('/tasks/:id', (req, res) => {
+app.get('/tasks/:id', async (req, res) => {
+  try {
     const _id = req.params.id;
-    Task.findById(_id).then((task) => {
-        res.send(task)
-    }).catch((e) => {
-        res.status(500).send('TASK NOT FOUND!3');
-    });
+    const task = await Task.findById(_id);
+    if (!task) {
+      return res.status(404).send('task NOT FOUND!');
+    }
+    res.send(task);
+  } catch (e) {
+      if (e.name === 'CastError') {
+        return res.status(400).json({ error: `Not valid id ${req.params.id}` });
+      }
+      console.log(JSON.stringify(e, null, 2));
+      res.status(500).send('TASK NOT FOUND!');
+    };
 });
 
 // create a new task
-app.post('/tasks', (req, res) => {
-    const task = new Task(req.body);
-    task.save().then(() => 
-        res.status(201).res.send(task))
-        .catch((e) => {
-        res.status(400).send(e);
-    });
-    
+app.post('/tasks', async (req, res) => {
+  const task = new Task(req.body);
+    try {
+      await task.save();
+      res.status(201).send(task);
+    } catch (e) {
+      res.status(400).send(e);
+    };
 });
 
 app.listen(port, () => {
-    console.log('Server is up on port ' + port);
+  console.log('Server is up on port ' + port);
 });
