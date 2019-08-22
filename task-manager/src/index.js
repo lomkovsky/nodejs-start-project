@@ -36,6 +36,29 @@ app.get('/users/:id', async (req, res) => {
   };
 });
 
+//update user by ID
+app.patch('/users/:id', async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ['name', 'email', 'password', 'age'];
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+    if (!isValidOperation) {
+      return res.status(400).send({error: 'Invalid updates!'});
+    };
+    try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!user) {
+      return res.status(404).send('USER NOT FOUND!');
+    };
+    res.send(user);
+    } catch (e) {
+      if (e.name === 'CastError') {
+        return res.status(400).json({ error: `Not valid id ${req.params.id}` });
+      };
+      console.log(JSON.stringify(e, null, 2));
+      res.status(500).send();
+    };
+});
+
 // create a new user
 app.post('/users', async (req, res) => {
   const user = new User(req.body);
