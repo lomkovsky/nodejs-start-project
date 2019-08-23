@@ -49,11 +49,17 @@ const Task = require('../models/task.js');
           return res.status(400).send({error: 'Invalid updates!'});
         };
         try {
-        const tast = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-        if (!tast) {
+        const task = await Task.findById(req.params.id);
+        if (!task) {
           return res.status(404).send('TASK NOT FOUND!');
         };
-        res.send(tast);
+        console.log(task);
+        updates.forEach((update) => task[update] = req.body[update]);
+        console.log(task);
+        task.save();  
+        //const tast = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        
+        res.send(task);
         } catch (e) {
           if (e.name === 'CastError') {
             return res.status(400).json({ error: `Not valid id ${req.params.id}` });
