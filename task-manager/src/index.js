@@ -20,9 +20,8 @@ app.get('/users', async (req, res) => {
 
 //read user by ID
 app.get('/users/:id', async (req, res) => {
-  const _id = req.params.id;
   try {
-    const user = await User.findById(_id);
+    const user = await User.findById(req.params.id);
     if (!user) {
       return res.status(404).send('USER NOT FOUND!');
     }
@@ -71,6 +70,24 @@ app.post('/users', async (req, res) => {
   };
 });
 
+// delete a user
+app.delete('/users/:id', async (req, res) => {
+    try {
+      const user = await User.findByIdAndDelete(req.params.id);
+      if (!user) {
+        return res.status(404).send('USER NOT FOUND!');
+      }
+      res.send({massage: 'user deleted'});
+    } catch (e) {
+      if (e.name === 'CastError') {
+        return res.status(400).json({ error: `Not valid id ${req.params.id}` });
+      }
+      console.log(JSON.stringify(e, null, 2));
+      res.status(500).send();
+    };
+  });
+
+
 //read all tasks
 app.get('/tasks', async (req, res) => {
   try {
@@ -84,8 +101,7 @@ app.get('/tasks', async (req, res) => {
 //read task by ID
 app.get('/tasks/:id', async (req, res) => {S
   try {
-    const _id = req.params.id;
-    const task = await Task.findById(_id);
+    const task = await Task.findById(req.params.id);
     if (!task) {
       return res.status(404).send('task NOT FOUND!');
     }
@@ -110,6 +126,47 @@ app.post('/tasks', async (req, res) => {
   };
 });
 
+//update task by ID
+app.patch('/tasks/:id', async (req, res) => {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = [ 'completed', 'description' ];
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+      if (!isValidOperation) {
+        return res.status(400).send({error: 'Invalid updates!'});
+      };
+      try {
+      const tast = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+      if (!tast) {
+        return res.status(404).send('TASK NOT FOUND!');
+      };
+      res.send(tast);
+      } catch (e) {
+        if (e.name === 'CastError') {
+          return res.status(400).json({ error: `Not valid id ${req.params.id}` });
+        };
+        console.log(JSON.stringify(e, null, 2));
+        res.status(500).send();
+      };
+  });
+
+// delete a task
+app.delete('/tasks/:id', async (req, res) => {
+    try {
+      const task = await Task.findByIdAndDelete(req.params.id);
+      if (!task) {
+        return res.status(404).send('TASK NOT FOUND!');
+      }
+      res.send({massage: 'task deleted'});
+    } catch (e) {
+      if (e.name === 'CastError') {
+        return res.status(400).json({ error: `Not valid id ${req.params.id}` });
+      }
+      console.log(JSON.stringify(e, null, 2));
+      res.status(500).send();
+    };
+  });
+
+// start server
 app.listen(port, () => {
   console.log('Server is up on port ' + port);
 });
