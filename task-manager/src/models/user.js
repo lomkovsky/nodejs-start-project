@@ -49,14 +49,14 @@ const userSchema = new mongoose.Schema({
   }]
 });
 
-//
+// create token write to database and return it
 userSchema.methods.generateAuthToken = async function() {
   const user = this;
   const token = jwt.sign({ _id: user.id.toString() }, "thisisit");
 
   user.tokens = user.tokens.concat({ token });
   await user.save();
-  
+
   return token;
 }
 
