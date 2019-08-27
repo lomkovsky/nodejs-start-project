@@ -62,14 +62,19 @@ userSchema.methods.generateAuthToken = async function() {
 
 // find user by email and compare the hash and plain password
 userSchema.statics.findByCredentials = async (email, password) => {
+  console.log('findByCredentials');
   const user = await User.findOne({ email });
+  console.log(user);
   if (!user) {
     throw new Error('Unable to login');
   };
   const isMatch = await bcrypt.compare(password, user.password);
+  console.log(isMatch);
   if (!isMatch) {
     throw new Error('Unable to login');
   };
+
+  console.log(user);
   return user;
 };
 

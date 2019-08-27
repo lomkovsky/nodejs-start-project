@@ -24,7 +24,9 @@ const User = require('../models/user.js');
   // 
   router.post('/users/login', async (req, res) => {
     try {
+        console.log('login...');
         const user = await User.findByCredentials(req.body.email, req.body.password);
+        console.log(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
         // if (!user) {
         //   res.status(400).send({error: "Unable to login"});
