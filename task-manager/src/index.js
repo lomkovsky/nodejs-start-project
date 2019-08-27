@@ -6,6 +6,7 @@ const userRouter = require('./routers/user.js');
 const app = express();
 // const mongoose = require('mongoose');
 const port = process.env.PORT || 3000;
+// middleware function
 // returns JSON
 app.use(express.json());
 // connection routers of /users
