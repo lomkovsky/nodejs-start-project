@@ -2,7 +2,7 @@ const express = require('express');
 const auth = require('../middleware/auth.js');
 const router = new express.Router();
 const User = require('../models/user.js');
-  //read all users
+  // read all users
   router.get('/users', auth, async (req, res) => {
     try {
       const result = await User.find();
@@ -12,7 +12,7 @@ const User = require('../models/user.js');
     };
   });
 
-  //read my user
+  // read my profile
   router.get('/users/me', auth, async (req, res) => {
     try {
       res.send(req.user);
@@ -21,7 +21,7 @@ const User = require('../models/user.js');
     };
   });
 
-  // 
+  // login user and generate new token 
   router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
@@ -35,9 +35,32 @@ const User = require('../models/user.js');
     };
   });
 
+  // logout user
+  router.post('/users/logout', auth, async (req, res) => {
+    try {
+      req.user.tokens = req.user.tokens.filter((token) => {
+        return token.token !== req.token;
+      });
+      await req.user.save();
+      res.send('logout');
+    } catch (e) {
+      res.status(500).send();
+    }
+  });
+
+  // logout all tokens user
+  router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+      req.user.tokens = [];
+      await req.user.save();
+      res.send('logout all tokens');
+    } catch (e) {
+      res.status(500).send();
+    }
+  });
 
 
-  //read user by ID
+  // read user by ID
   router.get('/users/:id', auth, async (req, res) => {
     try {
       const user = await User.findById(req.params.id);
@@ -54,7 +77,7 @@ const User = require('../models/user.js');
     };
   });
   
-  //update user by ID
+  // update user by ID
   router.patch('/users/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['name', 'email', 'password', 'age'];
