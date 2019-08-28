@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Task = require('./task');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -49,6 +50,13 @@ const userSchema = new mongoose.Schema({
   }]
 });
 
+// reference with task database
+userSchema.virtual('tasks', {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'owner'
+})
+
 // delete privet data from response
 userSchema.methods.toJSON = function () {
   const user = this;
@@ -89,6 +97,15 @@ userSchema.pre('save', async function(next) {
   };
   next();
 });
+
+// hash delete all tasks of user who is deleted himself
+userSchema.pre('remove', async function(next) {
+  const user = this;
+  const task = await Task.find ({ owner: user._id });
+  console.log(task);
+  await Task.deleteMany({ owner: user._id });
+  next();
+})
 
 const User = mongoose.model('User', userSchema);
 

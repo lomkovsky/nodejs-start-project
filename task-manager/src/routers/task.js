@@ -1,21 +1,25 @@
 const express = require('express');
 const router = new express.Router();
+const auth = require('../middleware/auth.js');
 const Task = require('../models/task.js');
 
   //read all tasks
-  router.get('/tasks', async (req, res) => {
+  router.get('/tasks', auth, async (req, res) => {
     try {
-      const task = await Task.find();
-      res.send(task);
+      // const task = await Task.find({owner: req.user._id});
+      await req.user.populate('tasks').execPopulate();
+      res.send(req.user.tasks);
+      // res.send(task);
     } catch (e) {
       res.status(500).send(e);
     };
   });
   
   //read task by ID
-  router.get('/tasks/:id', async (req, res) => {S
+  router.get('/tasks/:id', auth, async (req, res) => {
     try {
-      const task = await Task.findById(req.params.id);
+      // const task = await Task.findById(req.params.id);
+      const task = await Task.findOne({ _id: req.params.id, owner: req.user._id })
       if (!task) {
         return res.status(404).send('task NOT FOUND!');
       }
@@ -30,8 +34,11 @@ const Task = require('../models/task.js');
   });
   
   // create a new task
-  router.post('/tasks', async (req, res) => {
-    const task = new Task(req.body);
+  router.post('/tasks', auth, async (req, res) => {
+    const task = new Task({
+      ...req.body,
+      owner: req.user._id
+    });
     try {
       await task.save();
       res.status(201).send(task);
@@ -41,7 +48,7 @@ const Task = require('../models/task.js');
   });
   
   //update task by ID
-  router.patch('/tasks/:id', async (req, res) => {
+  router.patch('/tasks/:id', auth, async (req, res) => {
       const updates = Object.keys(req.body);
       const allowedUpdates = [ 'completed', 'description' ];
       const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
@@ -49,14 +56,13 @@ const Task = require('../models/task.js');
           return res.status(400).send({error: 'Invalid updates!'});
         };
         try {
-        const task = await Task.findById(req.params.id);
+          const task = await Task.findOne({ _id: req.params.id, owner: req.user._id })
+        // const task = await Task.findById(req.params.id);
         if (!task) {
           return res.status(404).send('TASK NOT FOUND!');
         };
-        console.log(task);
         updates.forEach((update) => task[update] = req.body[update]);
-        console.log(task);
-        task.save();  
+        await task.save();  
         //const tast = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
         
         res.send(task);
@@ -70,14 +76,14 @@ const Task = require('../models/task.js');
     });
   
   // delete a task
-  router.delete('/tasks/:id', async (req, res) => {
+  router.delete('/tasks/:id', auth, async (req, res) => {
       try {
-        const task = await Task.findByIdAndDelete(req.params.id);
+        const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
         if (!task) {
           return res.status(404).send('TASK NOT FOUND!');
         }
         res.send({massage: 'task deleted'});
-      } catch (e) {
+        } catch (e) {
         if (e.name === 'CastError') {
           return res.status(400).json({ error: `Not valid id ${req.params.id}` });
         }
