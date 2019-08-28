@@ -49,6 +49,14 @@ const userSchema = new mongoose.Schema({
   }]
 });
 
+// delete privet data from response
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+  delete userObject.password;
+  delete userObject.tokens;
+  return userObject;
+};
 // create token write to database and return it
 userSchema.methods.generateAuthToken = async function() {
   const user = this;
