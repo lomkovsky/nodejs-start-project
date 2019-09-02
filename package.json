@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node task-manager/src/index.js",
     "mongodb": "/home/lom/mongodb/bin/mongod --dbpath=/home/lom/mongodb-data",
-    "dev": "nodemon task-manager/src/index.js -e js,hbs,css"
+    "dev": "env-cmd -f ./task-manager/config/dev.env nodemon ./task-manager/src/index.js -e js,hbs,css"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/lomkovsky/nodejs-start-project#readme",
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^2.4.2",
     "express": "^4.17.1",
@@ -33,6 +34,7 @@
     "yargs": "^13.3.0"
   },
   "devDependencies": {
+    "env-cmd": "^10.0.1",
     "nodemon": "^1.19.1"
   }
 }

@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const sharp = require('sharp');
+const { sendWelcomeEmail, sendGoodbyeEmail } = require('../emails/account.js');
 const auth = require('../middleware/auth.js');
 const router = new express.Router();
 const User = require('../models/user.js');
@@ -110,6 +111,7 @@ router.post('/users', async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
+    sendWelcomeEmail(user.email, user.name);
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (e) {
@@ -125,6 +127,7 @@ router.delete('/users/me', auth, async (req, res) => {
     //   return res.status(404).send('USER NOT FOUND!');
     // }
     await req.user.remove();
+    sendGoodbyeEmail(req.user.email, req.user.name);
     res.send({ massage: 'user deleted' });
   } catch (e) {
     if (e.name === 'CastError') {

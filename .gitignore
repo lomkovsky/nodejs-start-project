@@ -11,3 +11,5 @@ foo.txt
 /node_modules
 # ignore .vscode
 .vscode
+# ignore environment config
+/task-manager/config

@@ -5,7 +5,7 @@ const taskRouter = require('./routers/task.js');
 const userRouter = require('./routers/user.js');
 const app = express();
 // const mongoose = require('mongoose');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 // middleware function
 // returns JSON
 app.use(express.json());
