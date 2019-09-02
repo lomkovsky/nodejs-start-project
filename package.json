@@ -4,7 +4,7 @@
   "description": "learning project of Dushkin Dmitro",
   "main": "index.js",
   "scripts": {
-    "start": "node task-manager/src/index.js",
+    "start": "node ./task-manager/src/index.js",
     "mongodb": "/home/lom/mongodb/bin/mongod --dbpath=/home/lom/mongodb-data",
     "dev": "env-cmd -f ./task-manager/config/dev.env nodemon ./task-manager/src/index.js -e js,hbs,css"
   },
