@@ -108,7 +108,7 @@ userSchema.pre('save', async function(next) {
 userSchema.pre('remove', async function(next) {
   const user = this;
   const task = await Task.find ({ owner: user._id });
-  console.log(task);
+  // console.log(task);
   await Task.deleteMany({ owner: user._id });
   next();
 })

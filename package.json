@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node ./task-manager/src/index.js",
     "mongodb": "/home/lom/mongodb/bin/mongod --dbpath=/home/lom/mongodb-data",
-    "dev": "env-cmd -f ./task-manager/config/dev.env nodemon ./task-manager/src/index.js -e js,hbs,css"
+    "dev": "env-cmd -f ./task-manager/config/dev.env nodemon ./task-manager/src/index.js -e js,hbs,css",
+    "test": "env-cmd -f ./task-manager/config/test.env jest --coverage --runInBand --detectOpenHandles"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
@@ -35,6 +39,8 @@
   },
   "devDependencies": {
     "env-cmd": "^10.0.1",
-    "nodemon": "^1.19.1"
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
   }
 }
